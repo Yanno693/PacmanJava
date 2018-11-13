@@ -12,4 +12,9 @@ public class Case {
         this.type = _type;
     }
 
+    public boolean estVide()
+    {
+        return (this.type == '-');
+    }
+
 }

@@ -31,7 +31,7 @@ public class Main extends Application {
 
         Scene s = new Scene(b, Color.LIGHTGRAY);
 
-        //primaryStage.setResizable(false);
+        primaryStage.setResizable(false);
         primaryStage.setWidth(500);
         primaryStage.setHeight(500);
 

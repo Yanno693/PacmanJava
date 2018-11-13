@@ -2,8 +2,10 @@ package com.pacman;
 
 public class Grille
 {
-    private int hauteur, largeur;
-    private Case etatGrille[][];
+    private int largeur, hauteur;
+    public Case etatGrille[][];
+    private Entite famtomes[];
+    private Entite pacman;
 
     public Grille()
     {
@@ -12,7 +14,16 @@ public class Grille
 
         etatGrille = new Case[largeur][hauteur];
         initialiser();
+    }
 
+    public int getHauteur()
+    {
+        return this.hauteur;
+    }
+
+    public int getLargeur()
+    {
+        return this.largeur;
     }
 
     private void initialiser()
@@ -30,10 +41,10 @@ public class Grille
         str_grille[9 ] = "OOOOOO-OOOOO-OO-OOOOO-OOOOOO";
         str_grille[10] = "OOOOOO-OOOOO-OO-OOOOO-OOOOOO";
         str_grille[11] = "OOOOOO-O------------O-OOOOOO";
-        str_grille[12] = "OOOOOO-O-OOOOOOOOOO-O-OOOOOO";
-        str_grille[13] = "OOOOOO-O-OOOOOOOOOO-O-OOOOOO";
-        str_grille[14] = "---------OOOOOOOOOO---------";
-        str_grille[15] = "OOOOOO-O-OOOOOOOOOO-O-OOOOOO";
+        str_grille[12] = "OOOOOO-O-OOOO--OOOO-O-OOOOOO";
+        str_grille[13] = "OOOOOO-O-OO------OO-O-OOOOOO";
+        str_grille[14] = "---------OO------OO---------";
+        str_grille[15] = "OOOOOO-O-OO------OO-O-OOOOOO";
         str_grille[16] = "OOOOOO-O-OOOOOOOOOO-O-OOOOOO";
         str_grille[17] = "OOOOOO-O------------O-OOOOOO";
         str_grille[18] = "OOOOOO-OOOOO-OO-OOOOO-OOOOOO";
