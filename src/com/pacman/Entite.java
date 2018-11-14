@@ -4,13 +4,16 @@ import java.util.Observable;
 
 public abstract class Entite extends Observable implements Runnable
 {
-    private boolean actif;
-    private int x, y;
+    protected boolean actif;
+    protected int x, y;
+    protected int direction;
 
     public Entite(int _x, int _y)
     {
         this.x = _x;
         this.y = _y;
+        actif = false;
+        direction = Tool.monRandom(0,3);
     }
 
     public int getX()
@@ -35,9 +38,9 @@ public abstract class Entite extends Observable implements Runnable
 
     public boolean haut(Grille g)
     {
-        if(g.etatGrille[this.x][(this.y - 1) % g.getHauteur()].estVide())
+        if(g.etatGrille[this.x][Math.floorMod(this.y - 1, g.getHauteur())].estVide())
         {
-            this.y--;
+            this.y = Math.floorMod(this.y - 1, g.getHauteur());
             return true;
         }
         else
@@ -48,9 +51,10 @@ public abstract class Entite extends Observable implements Runnable
 
     public boolean bas(Grille g)
     {
-        if(g.etatGrille[this.x][(this.y + 1) % g.getHauteur()].estVide())
+
+        if(g.etatGrille[this.x][Math.floorMod(this.y + 1, g.getHauteur())].estVide())
         {
-            this.y++;
+            this.y = Math.floorMod(this.y + 1, g.getHauteur());
             return true;
         }
         else
@@ -61,9 +65,9 @@ public abstract class Entite extends Observable implements Runnable
 
     public boolean gauche(Grille g)
     {
-        if(g.etatGrille[(this.x - 1) % g.getLargeur()][this.y].estVide())
+        if(g.etatGrille[Math.floorMod(this.x - 1,g.getLargeur())][this.y].estVide())
         {
-            this.x--;
+            this.x = Math.floorMod(this.x - 1, g.getLargeur());
             return true;
         }
         else
@@ -74,9 +78,9 @@ public abstract class Entite extends Observable implements Runnable
 
     public boolean droit(Grille g)
     {
-        if(g.etatGrille[(this.x + 1) % g.getLargeur()][this.y].estVide())
+        if(g.etatGrille[Math.floorMod(this.x + 1,g.getLargeur())][this.y].estVide())
         {
-            this.x++;
+            this.x = Math.floorMod(this.x + 1, g.getLargeur());
             return true;
         }
         else
@@ -93,4 +97,6 @@ public abstract class Entite extends Observable implements Runnable
 
         }*/
     }
+
+    public abstract void deplacer(Grille g);
 }
