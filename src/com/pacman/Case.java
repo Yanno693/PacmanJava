@@ -1,6 +1,7 @@
 package com.pacman;
 
-public class Case {
+public class Case
+{
 
     // - = Vide
     // T = Carrefour
@@ -19,6 +20,7 @@ public class Case {
     {
         return this.type;
     }
+    public void setType(char _type){ this.type = _type; }
 
     public boolean estVide()
     {

@@ -6,6 +6,8 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
@@ -47,21 +49,25 @@ public class Main extends Application {
         b.setCenter(t);
         //b.setTop(t);
 
-
         Scene s = new Scene(b, Color.LIGHTGRAY);
 
         primaryStage.setResizable(false);
         primaryStage.setWidth(500);
         primaryStage.setHeight(500);
 
+        s.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if(event.getCode() == KeyCode.A)
+                {
+                    t.setFill(Color.GREEN);
+                }
+            }
+        });
+
         primaryStage.setScene(s);
 
-
-
         primaryStage.show();
-
-
-
     }
 
     public static void main(String[] args)
@@ -69,15 +75,16 @@ public class Main extends Application {
 
         int nb = 0;
 
-        /*Grille g = new Grille();
-        //System.out.println(g.toString());
+        Jeu j = new Jeu();
+        j.nouvellePartie();
 
         while(true)
         {
             try{Thread.sleep(1000);}catch(InterruptedException e){System.out.println(e);}
-            g.deplacer();
-            System.out.println(g.toString());
-        }*/
+            j.boucleEvenement();
+            j.pause();
+            System.out.println(j.toString());
+        }
 
         /*int c = 5;
 
@@ -89,6 +96,6 @@ public class Main extends Application {
         }*/
 
 
-        launch(args);
+        //launch(args);
     }
 }

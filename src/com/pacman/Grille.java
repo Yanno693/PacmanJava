@@ -129,7 +129,6 @@ public class Grille
             }
             s += '\n';
         }
-
         return s;
     }
 }

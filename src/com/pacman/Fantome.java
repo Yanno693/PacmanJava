@@ -10,7 +10,6 @@ public class Fantome extends Entite {
     @Override
     public void deplacer(Grille g)
     {
-
         boolean deplacement = false;
 
         if(g.etatGrille[this.x][this.y].getType() != 'T')

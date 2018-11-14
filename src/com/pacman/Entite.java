@@ -1,8 +1,6 @@
 package com.pacman;
 
-import java.util.Observable;
-
-public abstract class Entite extends Observable implements Runnable
+public abstract class Entite implements Runnable
 {
     protected boolean actif;
     protected int x, y;
@@ -89,6 +87,8 @@ public abstract class Entite extends Observable implements Runnable
         }
     }
 
+    public abstract void deplacer(Grille g);
+
     @Override
     public void run()
     {
@@ -97,6 +97,4 @@ public abstract class Entite extends Observable implements Runnable
 
         }*/
     }
-
-    public abstract void deplacer(Grille g);
 }
