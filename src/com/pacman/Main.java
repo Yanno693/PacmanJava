@@ -1,5 +1,8 @@
 package com.pacman;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -8,19 +11,35 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+
+import java.util.concurrent.TimeUnit;
 
 public class Main extends Application {
+
+    static int i = 0;
+
+    public static Text t;
+
+    public static void fun()
+    {
+        i++;
+        t.setText(i + "");
+    }
 
     @Override
     public void start(Stage primaryStage) {
 
-        Text t;
-        t = new Text("Bonjour");
+        Timeline tl = new Timeline(new KeyFrame(Duration.millis(1000), ae -> fun() ));
+        tl.setCycleCount(Animation.INDEFINITE);
+        tl.play();
+
+        t = new Text(i + "");
         t.setFill(Color.RED);
         t.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                t.setText("aaa");
+                fun();
             }
         });
 
@@ -42,6 +61,7 @@ public class Main extends Application {
         primaryStage.show();
 
 
+
     }
 
     public static void main(String[] args)
@@ -49,7 +69,25 @@ public class Main extends Application {
 
         int nb = 0;
 
-        Grille g = new Grille();
+        /*Grille g = new Grille();
+        //System.out.println(g.toString());
+
+        while(true)
+        {
+            try{Thread.sleep(1000);}catch(InterruptedException e){System.out.println(e);}
+            g.deplacer();
+            System.out.println(g.toString());
+        }*/
+
+        /*int c = 5;
+
+        for(int i = 0; i < 6; i++)
+        {
+            c++;
+            System.out.println(c % 5);
+            System.out.println(Math.floorMod(c,5));
+        }*/
+
 
         launch(args);
     }
