@@ -3,7 +3,10 @@ package com.pacman;
 public class Case {
 
     // - = Vide
+    // T = Carrefour
     // O = Mur
+    // * = Pac Gomme
+    // Y = Super Pac Gomme
 
     private char type;
 
@@ -12,9 +15,14 @@ public class Case {
         this.type = _type;
     }
 
+    public char getType()
+    {
+        return this.type;
+    }
+
     public boolean estVide()
     {
-        return (this.type == '-');
+        return (this.type != 'O');
     }
 
 }
