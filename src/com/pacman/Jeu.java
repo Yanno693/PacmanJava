@@ -53,6 +53,7 @@ public class Jeu extends Observable
         if(!pause)
         {
             grille.deplacer();
+            System.out.println(this.toString());
         }
     }
 }
