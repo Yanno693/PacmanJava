@@ -46,6 +46,8 @@ public class Main extends Application { // Fais office de vue
         /*Text t = new Text("a");
         t.setFill(Color.RED);*/
 
+
+
         for(int j = 0; j < jeu.getGrille().getHauteur(); j++)
         {
             for(int i = 0; i < jeu.getGrille().getLargeur(); i++)
