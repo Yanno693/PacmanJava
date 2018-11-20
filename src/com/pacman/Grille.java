@@ -26,6 +26,10 @@ public class Grille
         return this.largeur;
     }
 
+    public Fantome[] getFantomes() { return this.fantomes; }
+
+    public Pacman getPacman() { return pacman; }
+
     private void initialiser()
     {
         String str_grille[] = new String[hauteur]; // Hauteur de 29

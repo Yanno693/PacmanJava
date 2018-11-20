@@ -96,5 +96,6 @@ public abstract class Entite implements Runnable
         {
 
         }*/
+        System.out.println("ÄAAAAAAAAAA");
     }
 }

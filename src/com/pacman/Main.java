@@ -15,30 +15,29 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.TriangleMesh;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.w3c.dom.css.Rect;
 
+import java.util.Observable;
+import java.util.Observer;
 import java.util.concurrent.TimeUnit;
 
-public class Main extends Application { // Fais office de vue
+public class Main extends Application implements Observer { // Fais office de vue
 
     private Jeu jeu;
 
-    @Override
-    public void start(Stage primaryStage) {
+    private Scene s;
+    private GridPane gridView;
 
-        jeu = new Jeu();
-        jeu.nouvellePartie();
-
-        primaryStage.setTitle("Pac-Man");
-
-        Timeline update = new Timeline(new KeyFrame(Duration.millis(1000), ae -> jeu.boucleEvenement() ));
-        update.setCycleCount(Animation.INDEFINITE);
-        update.play();
-
-        GridPane gridView = new GridPane();
+    private void afficherFrame()
+    {
+        gridView.getChildren().clear();
+        //gridView = new GridPane();
         //gridView.setGridLinesVisible(true);
         gridView.setHgap(1);
         gridView.setVgap(1);
@@ -47,12 +46,13 @@ public class Main extends Application { // Fais office de vue
         t.setFill(Color.RED);*/
 
 
-
         for(int j = 0; j < jeu.getGrille().getHauteur(); j++)
         {
             for(int i = 0; i < jeu.getGrille().getLargeur(); i++)
             {
                 Rectangle r = new Rectangle(0,0,20,20);
+                //Circle r = new Circle();
+                //r.setRadius(10);
 
                 if(jeu.getGrille().etatGrille[i][j].estVide())
                     r.setFill(Color.BLACK);
@@ -78,6 +78,23 @@ public class Main extends Application { // Fais office de vue
                     c.setFill(Color.YELLOW);
                     gridView.add(c,i,j);
                 }
+
+                for(int c = 0; c < jeu.getGrille().getFantomes().length; c++)
+                {
+                    if(jeu.getGrille().getFantomes()[c].getX() == i && jeu.getGrille().getFantomes()[c].getY() == j)
+                    {
+                        Rectangle f = new Rectangle(0,0,10,10);
+                        f.setFill(Color.GREEN);
+                        gridView.add(f,i,j);
+                    }
+                }
+
+                if(jeu.getGrille().getPacman().getX() == i && jeu.getGrille().getPacman().getY() == j)
+                {
+                    Rectangle f = new Rectangle(0,0,10,10);
+                    f.setFill(Color.RED);
+                    gridView.add(f,i,j);
+                }
             }
         }
 
@@ -100,28 +117,36 @@ public class Main extends Application { // Fais office de vue
         b.setCenter(t);
         //b.setTop(t);*/
 
-        Scene s = new Scene(gridView, Color.BLACK);
+        //s = new Scene(gridView, Color.BLACK);
+    }
 
-        /*primaryStage.setResizable(false);
-        primaryStage.setWidth(500);
-        primaryStage.setHeight(500);
+    @Override
+    public void update(Observable obs, Object c)
+    {
+        //System.out.println("ok");
+        afficherFrame();
+    }
 
-        s.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if(event.getCode() == KeyCode.A)
-                {
-                    t.setFill(Color.GREEN);
-                }
-            }
-        });*/
+    @Override
+    public void start(Stage primaryStage) {
+
+        jeu = new Jeu();
+        jeu.addObserver(this);
+        jeu.nouvellePartie();
+
+        primaryStage.setTitle("Pac-Man");
+
+        Timeline update = new Timeline(new KeyFrame(Duration.millis(300), ae -> jeu.boucleEvenement() ));
+        update.setCycleCount(Animation.INDEFINITE);
+        update.play();
+
+        gridView = new GridPane();
+        s = new Scene(gridView, Color.BLACK);
+        afficherFrame();
 
         primaryStage.setResizable(false);
         primaryStage.setScene(s);
         primaryStage.show();
-
-        primaryStage.setWidth(primaryStage.getWidth() - 10);
-        primaryStage.setHeight(primaryStage.getHeight() - 10);
     }
 
     public static void main(String[] args)
