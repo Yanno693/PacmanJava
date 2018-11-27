@@ -85,7 +85,18 @@ public class Grille
         {
             fantomes[i].deplacer(this);
         }
+
         pacman.deplacer(this);
+
+        if(etatGrille[pacman.getX()][pacman.getY()].getType() == '*')
+        {
+            etatGrille[pacman.getX()][pacman.getY()].setType('-');
+        }
+
+        if(etatGrille[pacman.getX()][pacman.getY()].getType() == 'Y')
+        {
+            etatGrille[pacman.getX()][pacman.getY()].setType('-');
+        }
     }
 
     @Override

@@ -9,8 +9,10 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
@@ -21,7 +23,8 @@ import javafx.util.Duration;
 import java.util.Observable;
 import java.util.Observer;
 
-public class Main extends Application implements Observer { // Fais office de vue
+public class Main extends Application implements Observer // Fais office de vue
+{
 
     private Jeu jeu;
 
@@ -129,7 +132,6 @@ public class Main extends Application implements Observer { // Fais office de vu
     @Override
     public void update(Observable obs, Object c)
     {
-        //System.out.println("ok");
         afficherFrame();
     }
 
@@ -142,15 +144,17 @@ public class Main extends Application implements Observer { // Fais office de vu
 
         primaryStage.setTitle("Pac-Man");
 
-        Timeline update = new Timeline(new KeyFrame(Duration.millis(300), ae -> jeu.boucleEvenement() ));
+        Timeline update = new Timeline(new KeyFrame(Duration.millis(150), ae -> jeu.boucleEvenement() ));
         update.setCycleCount(Animation.INDEFINITE);
         update.play();
 
         gridView = new GridPane();
         s = new Scene(gridView, Color.BLACK);
-        s.setOnKeyPressed(new EventHandler<KeyEvent>() {
+        s.setOnKeyPressed(new EventHandler<KeyEvent>()
+        {
             @Override
-            public void handle(KeyEvent event) {
+            public void handle(KeyEvent event)
+            {
                 actionClavier(event.getCode());
             }
         });
