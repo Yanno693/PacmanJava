@@ -6,7 +6,6 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -15,17 +14,12 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.TriangleMesh;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.w3c.dom.css.Rect;
 
 import java.util.Observable;
 import java.util.Observer;
-import java.util.concurrent.TimeUnit;
 
 public class Main extends Application implements Observer { // Fais office de vue
 
@@ -33,6 +27,18 @@ public class Main extends Application implements Observer { // Fais office de vu
 
     private Scene s;
     private GridPane gridView;
+
+    private void actionClavier(KeyCode input)
+    {
+        switch (input)
+        {
+            case UP: jeu.getGrille().getPacman().changerDirection(0); break;
+            case DOWN: jeu.getGrille().getPacman().changerDirection(1); break;
+            case LEFT: jeu.getGrille().getPacman().changerDirection(2); break;
+            case RIGHT: jeu.getGrille().getPacman().changerDirection(3); break;
+            case P: jeu.pause(); break;// Pause
+        }
+    }
 
     private void afficherFrame()
     {
@@ -142,6 +148,12 @@ public class Main extends Application implements Observer { // Fais office de vu
 
         gridView = new GridPane();
         s = new Scene(gridView, Color.BLACK);
+        s.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                actionClavier(event.getCode());
+            }
+        });
         afficherFrame();
 
         primaryStage.setResizable(false);
@@ -151,7 +163,6 @@ public class Main extends Application implements Observer { // Fais office de vu
 
     public static void main(String[] args)
     {
-
         launch(args);
     }
 }

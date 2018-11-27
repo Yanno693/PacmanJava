@@ -77,8 +77,6 @@ public class Grille
         fantomes[1] = new Fantome(14,11);
         fantomes[2] = new Fantome(11,14);
         fantomes[3] = new Fantome(16,14);
-
-        //System.out.println(str_grille[0].length());
     }
 
     public void deplacer()
@@ -87,6 +85,7 @@ public class Grille
         {
             fantomes[i].deplacer(this);
         }
+        pacman.deplacer(this);
     }
 
     @Override
@@ -128,7 +127,6 @@ public class Grille
                     {
                         s += "O";
                     }
-                    //s+= etatGrille[j][i].getType();
                 }
             }
             s += '\n';
