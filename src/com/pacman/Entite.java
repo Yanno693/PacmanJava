@@ -34,6 +34,8 @@ public abstract class Entite implements Runnable
         this.y = _y;
     }
 
+    public int getDirection(){ return this.direction; }
+
     public boolean haut(Grille g)
     {
         if(g.etatGrille[this.x][Math.floorMod(this.y - 1, g.getHauteur())].estVide())

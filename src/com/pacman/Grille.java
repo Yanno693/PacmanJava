@@ -79,24 +79,76 @@ public class Grille
         fantomes[3] = new Fantome(16,14);
     }
 
-    public void deplacer()
+    private int collision()
     {
+        int collision = -1;
+
+        for(int i = 0; i < fantomes.length; i++)
+        {
+            if(fantomes[i].getX() == pacman.getX() && fantomes[i].getY() == pacman.getY() && fantomes[i].getDirection() != pacman.getDirection())
+                collision = i;
+        }
+
+        return collision;
+    }
+
+    public int deplacer()
+    {
+        int pacGomme = 0;
+
         for(int i = 0; i < fantomes.length; i++)
         {
             fantomes[i].deplacer(this);
         }
 
+        int c;
+
+        c = collision();
+        if(c != -1)
+        {
+            if (pacman.estSuper())
+            {
+                pacGomme = 200;
+                fantomes[c].setX(11);
+                fantomes[c].setY(14);
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
         pacman.deplacer(this);
+
+        c = collision();
+        if(c != -1)
+        {
+            if (pacman.estSuper())
+            {
+                pacGomme = 200;
+                fantomes[c].setX(11);
+                fantomes[c].setY(14);
+            }
+            else
+            {
+                return -1;
+            }
+        }
 
         if(etatGrille[pacman.getX()][pacman.getY()].getType() == '*')
         {
             etatGrille[pacman.getX()][pacman.getY()].setType('-');
+            pacGomme = 10;
         }
 
         if(etatGrille[pacman.getX()][pacman.getY()].getType() == 'Y')
         {
             etatGrille[pacman.getX()][pacman.getY()].setType('-');
+            pacGomme = 50;
+            pacman.passerSuper();
         }
+
+        return pacGomme;
     }
 
     @Override

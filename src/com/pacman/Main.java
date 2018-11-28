@@ -7,29 +7,34 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.Observable;
 import java.util.Observer;
 
-public class Main extends Application implements Observer // Fais office de vue
+public class Main extends Application implements Observer // Fait office de vue
 {
 
     private Jeu jeu;
 
     private Scene s;
     private GridPane gridView;
+    private VBox verticalView;
+    private Text scoreView;
+
+    private Image[] pacmanImg;
+    private int positionPacmanImg;
 
     private void actionClavier(KeyCode input)
     {
@@ -45,6 +50,7 @@ public class Main extends Application implements Observer // Fais office de vue
 
     private void afficherFrame()
     {
+        scoreView.setText(jeu.getScore() + "");
         gridView.getChildren().clear();
         //gridView = new GridPane();
         //gridView.setGridLinesVisible(true);
@@ -53,6 +59,8 @@ public class Main extends Application implements Observer // Fais office de vue
 
         /*Text t = new Text("a");
         t.setFill(Color.RED);*/
+
+        positionPacmanImg = (positionPacmanImg + 1) % pacmanImg.length;
 
 
         for(int j = 0; j < jeu.getGrille().getHauteur(); j++)
@@ -100,9 +108,17 @@ public class Main extends Application implements Observer // Fais office de vue
 
                 if(jeu.getGrille().getPacman().getX() == i && jeu.getGrille().getPacman().getY() == j)
                 {
-                    Rectangle f = new Rectangle(0,0,10,10);
-                    f.setFill(Color.RED);
-                    gridView.add(f,i,j);
+                    ImageView imgView = new ImageView(pacmanImg[positionPacmanImg]);
+
+                    switch (jeu.getGrille().getPacman().getDirection())
+                    {
+                        case 0 : imgView.setRotate(90); break;
+                        case 1 : imgView.setRotate(270); break;
+                        case 2 : break;
+                        default: imgView.setRotate(180); break;
+                    }
+
+                    gridView.add(imgView,i,j);
                 }
             }
         }
@@ -142,14 +158,28 @@ public class Main extends Application implements Observer // Fais office de vue
         jeu.addObserver(this);
         jeu.nouvellePartie();
 
+        pacmanImg = new Image[3];
+        pacmanImg[0] = new Image("file:images/pacman1.png");
+        pacmanImg[1] = new Image("file:images/pacman2.png");
+        pacmanImg[2] = new Image("file:images/pacman3.png");
+        positionPacmanImg = 0;
+
         primaryStage.setTitle("Pac-Man");
 
         Timeline update = new Timeline(new KeyFrame(Duration.millis(150), ae -> jeu.boucleEvenement() ));
         update.setCycleCount(Animation.INDEFINITE);
         update.play();
 
+        verticalView = new VBox();
+        scoreView = new Text("0");
+        scoreView.setFill(Color.RED);
+
         gridView = new GridPane();
-        s = new Scene(gridView, Color.BLACK);
+
+        verticalView.getChildren().add(gridView);
+        verticalView.getChildren().add(scoreView);
+
+        s = new Scene(verticalView, Color.BLACK);
         s.setOnKeyPressed(new EventHandler<KeyEvent>()
         {
             @Override

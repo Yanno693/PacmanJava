@@ -8,10 +8,21 @@ public class Pacman extends Entite
     // 3 : Droite
 
     private int directionInput;
+    private int compteurSuper;
 
     public void changerDirection(int d)
     {
         directionInput = d;
+    }
+
+    public boolean estSuper()
+    {
+        return (compteurSuper > 0);
+    }
+
+    public void passerSuper()
+    {
+        compteurSuper = 50;
     }
 
     public Pacman(int _x, int _y)
@@ -19,6 +30,7 @@ public class Pacman extends Entite
         super(_x,_y);
         directionInput = -1;
         direction = -1;
+        compteurSuper = 0;
     }
 
     @Override
@@ -48,5 +60,8 @@ public class Pacman extends Entite
                 case 3 : this.droit(g); break;
             }
         }
+
+        if(estSuper())
+            compteurSuper--;
     }
 }

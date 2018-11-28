@@ -52,11 +52,16 @@ public class Jeu extends Observable
     {
         if(!pause)
         {
-            grille.deplacer();
+            int getScore = grille.deplacer();
+
+            if(getScore != -1)
+                score += getScore;
+            else
+                pause();
             //System.out.println(this.toString());
         }
 
         setChanged();
-        notifyObservers(null);
+        notifyObservers();
     }
 }
