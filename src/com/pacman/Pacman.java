@@ -7,8 +7,8 @@ public class Pacman extends Entite
     // 2 : Gauche
     // 3 : Droite
 
-    private int directionInput;
-    private int compteurSuper;
+    private int directionInput; // La direction donnee par láction du joueur
+    private int compteurSuper; // Un compteur pour savoir si on est en mode Super Pacman
 
     public void changerDirection(int d)
     {

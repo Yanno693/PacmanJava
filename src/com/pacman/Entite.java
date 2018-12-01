@@ -1,16 +1,14 @@
 package com.pacman;
 
-public abstract class Entite
+public abstract class Entite // Une entite pouvant se deplacer dans une grille
 {
-    protected boolean actif;
-    protected int x, y;
-    protected int direction;
+    protected int x, y; // La position de lentite dans la grille
+    protected int direction; // la direction vers laquelle va léntite
 
     public Entite(int _x, int _y)
     {
         this.x = _x;
         this.y = _y;
-        actif = false;
         direction = Tool.monRandom(0,3);
     }
 
@@ -36,7 +34,7 @@ public abstract class Entite
 
     public int getDirection(){ return this.direction; }
 
-    public boolean haut(Grille g)
+    public boolean haut(Grille g) // Deplacement vers le haut, renvoie true si le deplacement a ete effectue
     {
         if(g.etatGrille[this.x][Math.floorMod(this.y - 1, g.getHauteur())].estVide())
         {
@@ -49,7 +47,7 @@ public abstract class Entite
         }
     }
 
-    public boolean bas(Grille g)
+    public boolean bas(Grille g) // Deplacement vers le bas
     {
 
         if(g.etatGrille[this.x][Math.floorMod(this.y + 1, g.getHauteur())].estVide())
@@ -63,7 +61,7 @@ public abstract class Entite
         }
     }
 
-    public boolean gauche(Grille g)
+    public boolean gauche(Grille g) // Deplacement vers la gauche
     {
         if(g.etatGrille[Math.floorMod(this.x - 1,g.getLargeur())][this.y].estVide())
         {
@@ -76,7 +74,7 @@ public abstract class Entite
         }
     }
 
-    public boolean droit(Grille g)
+    public boolean droit(Grille g) // Deplacement vers la droite
     {
         if(g.etatGrille[Math.floorMod(this.x + 1,g.getLargeur())][this.y].estVide())
         {
@@ -89,6 +87,6 @@ public abstract class Entite
         }
     }
 
-    public abstract void deplacer(Grille g);
+    public abstract void deplacer(Grille g); // Deplacement de l'entite dans la grille donnée en paramètre
 
 }

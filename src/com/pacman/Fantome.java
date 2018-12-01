@@ -3,7 +3,7 @@ package com.pacman;
 public class Fantome extends Entite
 {
 
-    private boolean vulnerable;
+    private boolean vulnerable; // Si le fantome peut etre mange pas le joueur ou pas
 
     public Fantome(int _x, int _y)
     {

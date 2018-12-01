@@ -1,11 +1,11 @@
 package com.pacman;
 
-public class Grille
+public class Grille // Une grille de jeu
 {
     private int largeur, hauteur;
-    public Case etatGrille[][];
-    private Fantome fantomes[];
-    private Pacman pacman;
+    public Case etatGrille[][]; // Un tableau 2D de case representant la grille
+    private Fantome fantomes[]; // Les 4 fantomes
+    private Pacman pacman; // Le joueur
 
     public Grille()
     {
@@ -30,7 +30,7 @@ public class Grille
 
     public Pacman getPacman() { return pacman; }
 
-    private void initialiser()
+    private void initialiser() // Initialise une nouvelle grille en placant les pac-gomme, les fantomes et le joueur
     {
         String str_grille[] = new String[hauteur]; // Hauteur de 29
         str_grille[0 ] = "OOOOOOOOOOOOOOOOOOOOOOOOOOOO";
@@ -74,7 +74,7 @@ public class Grille
         placerEntite();
     }
 
-    public  void placerEntite()
+    public  void placerEntite() // place les fantpmes et le joueur
     {
         pacman = new Pacman(14,23);
         fantomes = new Fantome[4];
@@ -84,7 +84,7 @@ public class Grille
         fantomes[3] = new Fantome(16,14);
     }
 
-    private int collision()
+    private int collision() // detecte si il y a eu une collision entre le joueur et un fantome, renvoi l'indice du fantome dans le tableau, sinon -1
     {
         int collision = -1;
 
@@ -97,12 +97,14 @@ public class Grille
         return collision;
     }
 
-    public int deplacer()
+    public int deplacer() // Deplace toutes les entites de la grille et renvoie le score lie au deplacement
     {
         int pacGomme = 0;
 
         for(int i = 0; i < fantomes.length; i++)
         {
+            //Si le joueur n'est pas en mode Super
+            //les fantomes ne peuvent pas être mangés
             fantomes[i].deplacer(this);
             if(!pacman.estSuper())
                 fantomes[i].setVulnerable(false);
@@ -110,9 +112,11 @@ public class Grille
 
         int c;
 
+        //On vérifie s'il y avait une collision entre les fantomes et le pac-man
         c = collision();
         if(c != -1)
         {
+            // Si on mange le fantome, on gagne des points et on le replace au centre de la grille
             if (fantomes[c].estVulnerable())
             {
                 pacGomme = 200;
@@ -121,6 +125,7 @@ public class Grille
                 fantomes[c].setVulnerable(false);
 
             }
+            // Sinon on meurt
             else
             {
                 return -1;
@@ -129,6 +134,7 @@ public class Grille
 
         pacman.deplacer(this);
 
+        // On refait la meme opération après le deplacement du joueur
         c = collision();
         if(c != -1)
         {
@@ -145,12 +151,14 @@ public class Grille
             }
         }
 
+        // Si on mange une pac-gomme, on vide la case et on donne 10 points au joueur
         if(etatGrille[pacman.getX()][pacman.getY()].getType() == '*')
         {
             etatGrille[pacman.getX()][pacman.getY()].setType('-');
             pacGomme = 10;
         }
 
+        // Super pac-gomme -> 50 points + Super Pacman
         if(etatGrille[pacman.getX()][pacman.getY()].getType() == 'Y')
         {
             etatGrille[pacman.getX()][pacman.getY()].setType('-');

@@ -1,6 +1,6 @@
 package com.pacman;
 
-public class Case
+public class Case // Une case de grille
 {
 
     // - = Vide

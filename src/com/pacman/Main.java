@@ -47,6 +47,7 @@ public class Main extends Application implements Observer // Fait office de vue
             case DOWN: jeu.getGrille().getPacman().changerDirection(1); break;
             case LEFT: jeu.getGrille().getPacman().changerDirection(2); break;
             case RIGHT: jeu.getGrille().getPacman().changerDirection(3); break;
+            case R: jeu.nouvellePartie(); break;
             case P: jeu.pause(); break; // Pause
         }
     }
@@ -85,9 +86,7 @@ public class Main extends Application implements Observer // Fait office de vue
                 Rectangle r = new Rectangle(0,0,20,20);
                 r.setArcWidth(10);
                 r.setArcHeight(10);
-                //Circle r = new Circle();
-                //r.setRadius(10);
-
+                
                 if(jeu.getGrille().etatGrille[i][j].estVide())
                     r.setFill(Color.BLACK);
                 else
