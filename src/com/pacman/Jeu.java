@@ -7,19 +7,55 @@ public class Jeu extends Observable
     private boolean pause;
     private Grille grille;
     private int score;
+    private int vie;
+    private boolean gameover;
+    private int nbPacGommeTotal;
+    private int nbPacGomme;
 
     public Jeu()
     {
         pause = false;
         grille = new Grille();
         score = 0;
+        vie = 3;
+        gameover = false;
+
+        nbPacGommeTotal = 0;
+
+        for(int i = 0; i < grille.getLargeur(); i++)
+        {
+            for(int j = 0; j < grille.getHauteur(); j++)
+            {
+                if(grille.etatGrille[i][j].getType() == '*' || grille.etatGrille[i][j].getType() == 'Y')
+                    nbPacGommeTotal++;
+            }
+        }
+
+        nbPacGomme = nbPacGommeTotal;
     }
 
     public void nouvellePartie()
     {
         grille = new Grille();
-        score = 0;
+        //score = 0;
         pause = false;
+        vie--;
+    }
+
+    private void nouvelleManche()
+    {
+        grille = new Grille();
+        nbPacGomme = nbPacGommeTotal;
+    }
+
+    public int getVie()
+    {
+        return this.vie;
+    }
+
+    public boolean estGameover()
+    {
+        return this.gameover;
     }
 
     public int getScore()
@@ -39,7 +75,8 @@ public class Jeu extends Observable
 
     public void pause()
     {
-        pause = !pause;
+        if(!gameover)
+            pause = !pause;
     }
 
     @Override
@@ -55,9 +92,33 @@ public class Jeu extends Observable
             int getScore = grille.deplacer();
 
             if(getScore != -1)
+            {
                 score += getScore;
+                if(getScore == 10 || getScore == 50)
+                    nbPacGomme--;
+
+                if(nbPacGomme == 0)
+                    nouvelleManche();
+            }
             else
-                pause();
+            {
+                if(vie > 0)
+                {
+                    grille.placerEntite();
+                    vie--;
+                }
+                else
+                {
+                    pause();
+                    gameover = true;
+                }
+            }
+
+            if(score >= 10000)
+            {
+                score -= 10000;
+                vie++;
+            }
             //System.out.println(this.toString());
         }
 

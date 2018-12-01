@@ -1,6 +1,6 @@
 package com.pacman;
 
-public abstract class Entite implements Runnable
+public abstract class Entite
 {
     protected boolean actif;
     protected int x, y;
@@ -91,13 +91,4 @@ public abstract class Entite implements Runnable
 
     public abstract void deplacer(Grille g);
 
-    @Override
-    public void run()
-    {
-        /*while(actif)
-        {
-
-        }*/
-        System.out.println("ÄAAAAAAAAAA");
-    }
 }

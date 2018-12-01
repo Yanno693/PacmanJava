@@ -6,6 +6,7 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,6 +18,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -27,12 +29,13 @@ public class Main extends Application implements Observer // Fait office de vue
 {
 
     private Jeu jeu;
-
     private Scene s;
     private GridPane gridView;
     private VBox verticalView;
     private Text scoreView;
-
+    private Text gameoverView;
+    private HBox vieView;
+    private Image[] fantomeImg;
     private Image[] pacmanImg;
     private int positionPacmanImg;
 
@@ -44,13 +47,25 @@ public class Main extends Application implements Observer // Fait office de vue
             case DOWN: jeu.getGrille().getPacman().changerDirection(1); break;
             case LEFT: jeu.getGrille().getPacman().changerDirection(2); break;
             case RIGHT: jeu.getGrille().getPacman().changerDirection(3); break;
-            case P: jeu.pause(); break;// Pause
+            case P: jeu.pause(); break; // Pause
         }
     }
 
     private void afficherFrame()
     {
-        scoreView.setText(jeu.getScore() + "");
+        scoreView.setText("Score : " + jeu.getScore());
+        vieView.getChildren().clear();
+
+        for(int i = 0; i < jeu.getVie(); i++)
+        {
+            ImageView vie = new ImageView(pacmanImg[0]);
+            vieView.getChildren().add(vie);
+        }
+
+        if(jeu.estGameover())
+            gameoverView.setText("GAME OVER");
+
+       //scoreView.setFont(Font.font ("Comic Sans MS", 20));
         gridView.getChildren().clear();
         //gridView = new GridPane();
         //gridView.setGridLinesVisible(true);
@@ -68,6 +83,8 @@ public class Main extends Application implements Observer // Fait office de vue
             for(int i = 0; i < jeu.getGrille().getLargeur(); i++)
             {
                 Rectangle r = new Rectangle(0,0,20,20);
+                r.setArcWidth(10);
+                r.setArcHeight(10);
                 //Circle r = new Circle();
                 //r.setRadius(10);
 
@@ -78,7 +95,7 @@ public class Main extends Application implements Observer // Fait office de vue
 
                 gridView.add(r,i,j);
 
-                if(jeu.getGrille().etatGrille[i][j].getType() == '*')
+                if(jeu.getGrille().etatGrille[i][j].getType() == '*' && !jeu.estGameover())
                 {
                     Circle c = new Circle();
                     c.setTranslateX(8);
@@ -87,7 +104,7 @@ public class Main extends Application implements Observer // Fait office de vue
                     gridView.add(c,i,j);
                 }
 
-                if(jeu.getGrille().etatGrille[i][j].getType() == 'Y')
+                if(jeu.getGrille().etatGrille[i][j].getType() == 'Y' && !jeu.estGameover())
                 {
                     Circle c = new Circle();
                     c.setTranslateX(6);
@@ -98,15 +115,19 @@ public class Main extends Application implements Observer // Fait office de vue
 
                 for(int c = 0; c < jeu.getGrille().getFantomes().length; c++)
                 {
-                    if(jeu.getGrille().getFantomes()[c].getX() == i && jeu.getGrille().getFantomes()[c].getY() == j)
+                    if(jeu.getGrille().getFantomes()[c].getX() == i && jeu.getGrille().getFantomes()[c].getY() == j && !jeu.estGameover())
                     {
-                        Rectangle f = new Rectangle(0,0,10,10);
-                        f.setFill(Color.GREEN);
-                        gridView.add(f,i,j);
+                        ImageView imgView;
+
+                        if(jeu.getGrille().getFantomes()[c].estVulnerable())
+                            imgView = new ImageView(fantomeImg[4]);
+                        else
+                            imgView = new ImageView(fantomeImg[c]);
+                        gridView.add(imgView,i,j);
                     }
                 }
 
-                if(jeu.getGrille().getPacman().getX() == i && jeu.getGrille().getPacman().getY() == j)
+                if(jeu.getGrille().getPacman().getX() == i && jeu.getGrille().getPacman().getY() == j && !jeu.estGameover())
                 {
                     ImageView imgView = new ImageView(pacmanImg[positionPacmanImg]);
 
@@ -117,6 +138,7 @@ public class Main extends Application implements Observer // Fait office de vue
                         case 2 : break;
                         default: imgView.setRotate(180); break;
                     }
+                    imgView.setTranslateX(3);
 
                     gridView.add(imgView,i,j);
                 }
@@ -127,22 +149,6 @@ public class Main extends Application implements Observer // Fait office de vue
         Background b = new Background(fill);
         gridView.setBackground(b);
 
-        //gridView.add(t,0,20);
-
-        /*t = new Text(i + "");
-        t.setFill(Color.RED);
-        t.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                fun();
-            }
-        });
-
-        BorderPane b = new BorderPane();
-        b.setCenter(t);
-        //b.setTop(t);*/
-
-        //s = new Scene(gridView, Color.BLACK);
     }
 
     @Override
@@ -158,6 +164,13 @@ public class Main extends Application implements Observer // Fait office de vue
         jeu.addObserver(this);
         jeu.nouvellePartie();
 
+        fantomeImg = new Image[5];
+        fantomeImg[0] = new Image("file:images/fantome1.png");
+        fantomeImg[1] = new Image("file:images/fantome2.png");
+        fantomeImg[2] = new Image("file:images/fantome3.png");
+        fantomeImg[3] = new Image("file:images/fantome4.png");
+        fantomeImg[4] = new Image("file:images/fantomebleu.png");
+
         pacmanImg = new Image[3];
         pacmanImg[0] = new Image("file:images/pacman1.png");
         pacmanImg[1] = new Image("file:images/pacman2.png");
@@ -171,13 +184,24 @@ public class Main extends Application implements Observer // Fait office de vue
         update.play();
 
         verticalView = new VBox();
+        verticalView.setPadding(new Insets(10,0,0,0));
+        verticalView.setSpacing(10);
         scoreView = new Text("0");
-        scoreView.setFill(Color.RED);
+        scoreView.setFill(Color.WHITE);
+        gameoverView = new Text("");
+        gameoverView.setFill(Color.RED);
+        //scoreView.setFont(Font.fon);
+        vieView = new HBox();
+
+        System.out.println(javafx.scene.text.Font.getFamilies());
 
         gridView = new GridPane();
 
-        verticalView.getChildren().add(gridView);
         verticalView.getChildren().add(scoreView);
+        verticalView.getChildren().add(gridView);
+        verticalView.getChildren().add(vieView);
+        verticalView.getChildren().add(gameoverView);
+        verticalView.setAlignment(Pos.CENTER);
 
         s = new Scene(verticalView, Color.BLACK);
         s.setOnKeyPressed(new EventHandler<KeyEvent>()
@@ -195,8 +219,8 @@ public class Main extends Application implements Observer // Fait office de vue
         primaryStage.show();
     }
 
-    public static void main(String[] args)
+    public static void main()
     {
-        launch(args);
+        launch();
     }
 }

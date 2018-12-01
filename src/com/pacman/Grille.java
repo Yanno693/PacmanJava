@@ -71,6 +71,11 @@ public class Grille
             }
         }
 
+        placerEntite();
+    }
+
+    public  void placerEntite()
+    {
         pacman = new Pacman(14,23);
         fantomes = new Fantome[4];
         fantomes[0] = new Fantome(13,11);
@@ -99,6 +104,8 @@ public class Grille
         for(int i = 0; i < fantomes.length; i++)
         {
             fantomes[i].deplacer(this);
+            if(!pacman.estSuper())
+                fantomes[i].setVulnerable(false);
         }
 
         int c;
@@ -106,11 +113,13 @@ public class Grille
         c = collision();
         if(c != -1)
         {
-            if (pacman.estSuper())
+            if (fantomes[c].estVulnerable())
             {
                 pacGomme = 200;
                 fantomes[c].setX(11);
                 fantomes[c].setY(14);
+                fantomes[c].setVulnerable(false);
+
             }
             else
             {
@@ -123,11 +132,12 @@ public class Grille
         c = collision();
         if(c != -1)
         {
-            if (pacman.estSuper())
+            if (fantomes[c].estVulnerable())
             {
                 pacGomme = 200;
                 fantomes[c].setX(11);
                 fantomes[c].setY(14);
+                fantomes[c].setVulnerable(false);
             }
             else
             {
@@ -146,6 +156,11 @@ public class Grille
             etatGrille[pacman.getX()][pacman.getY()].setType('-');
             pacGomme = 50;
             pacman.passerSuper();
+
+            for(int i = 0; i < fantomes.length; i++)
+            {
+                fantomes[i].setVulnerable(true);
+            }
         }
 
         return pacGomme;

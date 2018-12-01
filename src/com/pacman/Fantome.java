@@ -1,10 +1,24 @@
 package com.pacman;
 
-public class Fantome extends Entite {
+public class Fantome extends Entite
+{
+
+    private boolean vulnerable;
 
     public Fantome(int _x, int _y)
     {
         super(_x, _y);
+        vulnerable = false;
+    }
+
+    public boolean estVulnerable()
+    {
+        return this.vulnerable;
+    }
+
+    public void setVulnerable(boolean vulnerable)
+    {
+        this.vulnerable = vulnerable;
     }
 
     @Override
