@@ -1,9 +1,9 @@
 package com.pacman;
 
-public abstract class Entite // Une entite pouvant se deplacer dans une grille
+public abstract class Entite // Une entité pouvant se deplacer dans une grille
 {
-    protected int x, y; // La position de lentite dans la grille
-    protected int direction; // la direction vers laquelle va léntite
+    protected int x, y; // La position de l'entité dans la grille
+    protected int direction; // la direction vers laquelle va l'entité
 
     public Entite(int _x, int _y)
     {
@@ -34,7 +34,8 @@ public abstract class Entite // Une entite pouvant se deplacer dans une grille
 
     public int getDirection(){ return this.direction; }
 
-    public boolean haut(Grille g) // Deplacement vers le haut, renvoie true si le deplacement a ete effectue
+    // Deplacement vers le haut, renvoie true si le deplacement a été effectué
+    public boolean haut(Grille g)
     {
         if(g.etatGrille[this.x][Math.floorMod(this.y - 1, g.getHauteur())].estVide())
         {
@@ -47,7 +48,8 @@ public abstract class Entite // Une entite pouvant se deplacer dans une grille
         }
     }
 
-    public boolean bas(Grille g) // Deplacement vers le bas
+    // Deplacement vers le bas
+    public boolean bas(Grille g)
     {
 
         if(g.etatGrille[this.x][Math.floorMod(this.y + 1, g.getHauteur())].estVide())
@@ -61,7 +63,8 @@ public abstract class Entite // Une entite pouvant se deplacer dans une grille
         }
     }
 
-    public boolean gauche(Grille g) // Deplacement vers la gauche
+    // Deplacement vers la gauche
+    public boolean gauche(Grille g)
     {
         if(g.etatGrille[Math.floorMod(this.x - 1,g.getLargeur())][this.y].estVide())
         {
@@ -74,7 +77,8 @@ public abstract class Entite // Une entite pouvant se deplacer dans une grille
         }
     }
 
-    public boolean droit(Grille g) // Deplacement vers la droite
+    // Deplacement vers la droite
+    public boolean droit(Grille g)
     {
         if(g.etatGrille[Math.floorMod(this.x + 1,g.getLargeur())][this.y].estVide())
         {
@@ -87,6 +91,7 @@ public abstract class Entite // Une entite pouvant se deplacer dans une grille
         }
     }
 
-    public abstract void deplacer(Grille g); // Deplacement de l'entite dans la grille donnée en paramètre
+    // Deplacement de l'entité dans la grille donnée en paramètre
+    public abstract void deplacer(Grille g);
 
 }

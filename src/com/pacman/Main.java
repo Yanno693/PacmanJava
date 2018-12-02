@@ -18,7 +18,6 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -39,6 +38,8 @@ public class Main extends Application implements Observer // Fait office de vue
     private Image[] pacmanImg;
     private int positionPacmanImg;
 
+    //Verification de la touche appuie sur le clavier du joueur
+    //les fleches pour controler Pac-Man, R -> commencer une nouvelle partie, P -> mettre en pause
     private void actionClavier(KeyCode input)
     {
         switch (input)
@@ -52,11 +53,14 @@ public class Main extends Application implements Observer // Fait office de vue
         }
     }
 
+    //Affichage de la scene
     private void afficherFrame()
     {
+        //Le bar tout en haut qui affiche le résultat du joueur
         scoreView.setText("Score : " + jeu.getScore());
         vieView.getChildren().clear();
 
+        //le bar en bas qui affiche les vies du joueur
         for(int i = 0; i < jeu.getVie(); i++)
         {
             ImageView vie = new ImageView(pacmanImg[0]);
@@ -66,34 +70,32 @@ public class Main extends Application implements Observer // Fait office de vue
         if(jeu.estGameover())
             gameoverView.setText("GAME OVER");
 
-       //scoreView.setFont(Font.font ("Comic Sans MS", 20));
         gridView.getChildren().clear();
-        //gridView = new GridPane();
-        //gridView.setGridLinesVisible(true);
         gridView.setHgap(1);
         gridView.setVgap(1);
 
-        /*Text t = new Text("a");
-        t.setFill(Color.RED);*/
 
         positionPacmanImg = (positionPacmanImg + 1) % pacmanImg.length;
 
-
+        //Remplissage de la grille du jeu
         for(int j = 0; j < jeu.getGrille().getHauteur(); j++)
         {
             for(int i = 0; i < jeu.getGrille().getLargeur(); i++)
             {
+                //création des petits carreaux et leur positionement aux coordonnées i, j
                 Rectangle r = new Rectangle(0,0,20,20);
                 r.setArcWidth(10);
                 r.setArcHeight(10);
-                
+
                 if(jeu.getGrille().etatGrille[i][j].estVide())
                     r.setFill(Color.BLACK);
                 else
                     r.setFill(Color.CORNFLOWERBLUE);
 
+
                 gridView.add(r,i,j);
 
+                //Positionement de pacGommes
                 if(jeu.getGrille().etatGrille[i][j].getType() == '*' && !jeu.estGameover())
                 {
                     Circle c = new Circle();
@@ -103,6 +105,8 @@ public class Main extends Application implements Observer // Fait office de vue
                     gridView.add(c,i,j);
                 }
 
+
+                //Positionement de super pacGommes
                 if(jeu.getGrille().etatGrille[i][j].getType() == 'Y' && !jeu.estGameover())
                 {
                     Circle c = new Circle();
@@ -112,6 +116,8 @@ public class Main extends Application implements Observer // Fait office de vue
                     gridView.add(c,i,j);
                 }
 
+                //Affichage des images de fantomes sur la grille en fonction de
+                //s'ils sont vulnerables ou dans son état normal
                 for(int c = 0; c < jeu.getGrille().getFantomes().length; c++)
                 {
                     if(jeu.getGrille().getFantomes()[c].getX() == i && jeu.getGrille().getFantomes()[c].getY() == j && !jeu.estGameover())
@@ -126,10 +132,12 @@ public class Main extends Application implements Observer // Fait office de vue
                     }
                 }
 
+                //Affichage de Pac-Man sur la grille
                 if(jeu.getGrille().getPacman().getX() == i && jeu.getGrille().getPacman().getY() == j && !jeu.estGameover())
                 {
                     ImageView imgView = new ImageView(pacmanImg[positionPacmanImg]);
 
+                    //On tourne l'image de Pac-Man en fonction de sa direction
                     switch (jeu.getGrille().getPacman().getDirection())
                     {
                         case 0 : imgView.setRotate(90); break;
@@ -144,6 +152,7 @@ public class Main extends Application implements Observer // Fait office de vue
             }
         }
 
+        //Affichage du background
         BackgroundFill fill = new BackgroundFill(Paint.valueOf("222222"), CornerRadii.EMPTY, Insets.EMPTY);
         Background b = new Background(fill);
         gridView.setBackground(b);
@@ -189,13 +198,11 @@ public class Main extends Application implements Observer // Fait office de vue
         scoreView.setFill(Color.WHITE);
         gameoverView = new Text("");
         gameoverView.setFill(Color.RED);
-        //scoreView.setFont(Font.fon);
         vieView = new HBox();
-
-        System.out.println(javafx.scene.text.Font.getFamilies());
 
         gridView = new GridPane();
 
+        //Remplissage de la fenetre avec les views
         verticalView.getChildren().add(scoreView);
         verticalView.getChildren().add(gridView);
         verticalView.getChildren().add(vieView);

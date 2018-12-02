@@ -3,7 +3,7 @@ package com.pacman;
 public class Fantome extends Entite
 {
 
-    private boolean vulnerable; // Si le fantome peut etre mange pas le joueur ou pas
+    private boolean vulnerable; // Si le fantome peut être mangé par Pac-Man ou pas
 
     public Fantome(int _x, int _y)
     {
@@ -26,9 +26,10 @@ public class Fantome extends Entite
     {
         boolean deplacement = false;
 
+        // Le fantome continue dans sa direction
         if(g.etatGrille[this.x][this.y].getType() != 'T')
         {
-            switch (this.direction) // Etat "Je continue dans ma direction"
+            switch (this.direction)
             {
                 case 0 : deplacement = this.haut(g); break;
                 case 1 : deplacement = this.bas(g); break;
@@ -37,11 +38,13 @@ public class Fantome extends Entite
             }
         }
 
+        //S'il n'a pas pu continue dans sa direction,
+        //il la change avec une direction choisie au hasard
         if(!deplacement)
         {
             do{
                 this.direction = Tool.monRandom(0,3);
-                switch (this.direction) // Etat "Je change de direction"
+                switch (this.direction)
                 {
                     case 0 : deplacement = this.haut(g); break;
                     case 1 : deplacement = this.bas(g); break;

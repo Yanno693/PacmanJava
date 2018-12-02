@@ -9,8 +9,8 @@ public class Jeu extends Observable
     private int score; // le score du joueur
     private int vie; // le nombre de vie du joueur
     private boolean gameover; // Si le jeu est termine ou pas
-    private int nbPacGommeTotal; // Le nombre de pacGomme en debut de partie
-    private int nbPacGomme; // Le nombre de pac-gomme pendant la partie
+    private int nbPacGommeTotal; // Le nombre de PacGomme au debut de partie
+    private int nbPacGomme; // Le nombre de PacGomme pendant la partie
 
     public Jeu()
     {
@@ -34,7 +34,8 @@ public class Jeu extends Observable
         nbPacGomme = nbPacGommeTotal;
     }
 
-    public void nouvellePartie() // Lance une nouvelle partie en reinitialisant le score et la vie du joueur
+    // Lance une nouvelle partie en reinitialisant le score et la vie du joueur
+    public void nouvellePartie()
     {
         pause = false;
         score = 0;
@@ -44,7 +45,8 @@ public class Jeu extends Observable
         nouvelleManche();
     }
 
-    private void nouvelleManche() // lance une nouvelle manche en gardant le score et le nombre de vie du joueur
+    // Lance une nouvelle manche en gardant le score et le nombre de vie du joueur
+    private void nouvelleManche()
     {
         grille = new Grille();
         nbPacGomme = nbPacGommeTotal;
@@ -93,31 +95,31 @@ public class Jeu extends Observable
         // si le jeu n'est pas en pause
         if(!pause)
         {
-            // On recupere le score lié qu deplacement du joueur
+            // On récupère le score lié au deplacement du joueur
             int getScore = grille.deplacer();
 
             // Si le joueur n'est pas touché par un fantome
             if(getScore != -1)
             {
                 score += getScore;
-                if(getScore == 10 || getScore == 50) // Si on a mangé une pac-gomme
+                // Si on avait mangé une Pac-gomme
+                if(getScore == 10 || getScore == 50)
                     nbPacGomme--;
 
-                // si on a mangé toutes les pac-gommes,
+                // si on a mangé toutes les Pac-gommes,
                 // on remlis à nouveau la grille
                 if(nbPacGomme == 0)
                     nouvelleManche();
             }
             else
             {
-                // Si le joueur a encore des vies, on replace les entites et on enleve une vie
+                // Si le joueur a encore des vies, on replace les entités et on enlève une vie
                 if(vie > 0)
                 {
                     grille.placerEntite();
                     vie--;
                 }
-                // Sinon on arrete la partie
-                else
+                else // Sinon on arrete la partie
                 {
                     pause();
                     gameover = true;

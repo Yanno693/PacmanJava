@@ -7,8 +7,8 @@ public class Pacman extends Entite
     // 2 : Gauche
     // 3 : Droite
 
-    private int directionInput; // La direction donnee par láction du joueur
-    private int compteurSuper; // Un compteur pour savoir si on est en mode Super Pacman
+    private int directionInput; // La direction donnée par l'action du joueur
+    private int compteurSuper; // Un compteur pour savoir si on est en mode Super Pac-man
 
     public void changerDirection(int d)
     {
@@ -38,7 +38,8 @@ public class Pacman extends Entite
     {
         boolean changement = false;
 
-        switch (this.directionInput) // Est-ce que je peux aller dans la direction de l'input
+        // Est-ce que Pac-Man peut aller dans la direction saisi par le joueur
+        switch (this.directionInput)
         {
             case 0 : changement = this.haut(g); break;
             case 1 : changement = this.bas(g); break;
@@ -46,19 +47,21 @@ public class Pacman extends Entite
             case 3 : changement = this.droit(g); break;
         }
 
-        if(changement) // Si le deplacement a eu lieu
+        // Si le deplacement a eu lieu, alors on affecte à Pac-Man cette direction
+        if(changement)
         {
             this.direction = this.directionInput;
         }
-        else // Sinon on continue dans notre direction
+        else // Sinon on continue dans la direction actuelle de Pac-Man
         {
-            switch (this.direction) // Est-ce que je peux aller dans la direction de m
+            switch (this.direction)
             {
                 case 0 : this.haut(g); break;
                 case 1 : this.bas(g); break;
                 case 2 : this.gauche(g); break;
                 case 3 : this.droit(g); break;
             }
+
         }
 
         if(estSuper())
