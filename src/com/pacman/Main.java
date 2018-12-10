@@ -54,40 +54,39 @@ public class Main extends Application implements Observer // Fait office de vue
     }
 
     //Affichage de la scene
-    private void afficherFrame()
+    private void afficherFrame(Jeu _jeu)
     {
         //Le bar tout en haut qui affiche le résultat du joueur
-        scoreView.setText("Score : " + jeu.getScore());
+        scoreView.setText("Score : " + _jeu.getScore());
         vieView.getChildren().clear();
 
         //le bar en bas qui affiche les vies du joueur
-        for(int i = 0; i < jeu.getVie(); i++)
+        for(int i = 0; i < _jeu.getVie(); i++)
         {
             ImageView vie = new ImageView(pacmanImg[0]);
             vieView.getChildren().add(vie);
         }
 
-        if(jeu.estGameover())
+        if(_jeu.estGameover())
             gameoverView.setText("GAME OVER");
 
         gridView.getChildren().clear();
         gridView.setHgap(1);
         gridView.setVgap(1);
 
-
         positionPacmanImg = (positionPacmanImg + 1) % pacmanImg.length;
 
         //Remplissage de la grille du jeu
-        for(int j = 0; j < jeu.getGrille().getHauteur(); j++)
+        for(int j = 0; j < _jeu.getGrille().getHauteur(); j++)
         {
-            for(int i = 0; i < jeu.getGrille().getLargeur(); i++)
+            for(int i = 0; i < _jeu.getGrille().getLargeur(); i++)
             {
                 //création des petits carreaux et leur positionement aux coordonnées i, j
                 Rectangle r = new Rectangle(0,0,20,20);
                 r.setArcWidth(10);
                 r.setArcHeight(10);
 
-                if(jeu.getGrille().etatGrille[i][j].estVide())
+                if(_jeu.getGrille().etatGrille[i][j].estVide())
                     r.setFill(Color.BLACK);
                 else
                     r.setFill(Color.CORNFLOWERBLUE);
@@ -96,7 +95,7 @@ public class Main extends Application implements Observer // Fait office de vue
                 gridView.add(r,i,j);
 
                 //Positionement de pacGommes
-                if(jeu.getGrille().etatGrille[i][j].getType() == '*' && !jeu.estGameover())
+                if(_jeu.getGrille().etatGrille[i][j].getType() == '*' && !_jeu.estGameover())
                 {
                     Circle c = new Circle();
                     c.setTranslateX(8);
@@ -107,7 +106,7 @@ public class Main extends Application implements Observer // Fait office de vue
 
 
                 //Positionement de super pacGommes
-                if(jeu.getGrille().etatGrille[i][j].getType() == 'Y' && !jeu.estGameover())
+                if(_jeu.getGrille().etatGrille[i][j].getType() == 'Y' && !_jeu.estGameover())
                 {
                     Circle c = new Circle();
                     c.setTranslateX(6);
@@ -118,27 +117,29 @@ public class Main extends Application implements Observer // Fait office de vue
 
                 //Affichage des images de fantomes sur la grille en fonction de
                 //s'ils sont vulnerables ou dans son état normal
-                for(int c = 0; c < jeu.getGrille().getFantomes().length; c++)
+                for(int c = 0; c < _jeu.getGrille().getFantomes().length; c++)
                 {
-                    if(jeu.getGrille().getFantomes()[c].getX() == i && jeu.getGrille().getFantomes()[c].getY() == j && !jeu.estGameover())
+                    if(_jeu.getGrille().getFantomes()[c].getX() == i && _jeu.getGrille().getFantomes()[c].getY() == j && !_jeu.estGameover())
                     {
                         ImageView imgView;
 
-                        if(jeu.getGrille().getFantomes()[c].estVulnerable())
+                        if(_jeu.getGrille().getFantomes()[c].estVulnerable())
                             imgView = new ImageView(fantomeImg[4]);
                         else
                             imgView = new ImageView(fantomeImg[c]);
+
+                        imgView.setTranslateX(2);
                         gridView.add(imgView,i,j);
                     }
                 }
 
                 //Affichage de Pac-Man sur la grille
-                if(jeu.getGrille().getPacman().getX() == i && jeu.getGrille().getPacman().getY() == j && !jeu.estGameover())
+                if(_jeu.getGrille().getPacman().getX() == i && _jeu.getGrille().getPacman().getY() == j && !_jeu.estGameover())
                 {
                     ImageView imgView = new ImageView(pacmanImg[positionPacmanImg]);
 
                     //On tourne l'image de Pac-Man en fonction de sa direction
-                    switch (jeu.getGrille().getPacman().getDirection())
+                    switch (_jeu.getGrille().getPacman().getDirection())
                     {
                         case 0 : imgView.setRotate(90); break;
                         case 1 : imgView.setRotate(270); break;
@@ -156,21 +157,20 @@ public class Main extends Application implements Observer // Fait office de vue
         BackgroundFill fill = new BackgroundFill(Paint.valueOf("222222"), CornerRadii.EMPTY, Insets.EMPTY);
         Background b = new Background(fill);
         gridView.setBackground(b);
-
     }
 
     @Override
     public void update(Observable obs, Object c)
     {
-        afficherFrame();
+        afficherFrame((Jeu)obs);
     }
 
     @Override
     public void start(Stage primaryStage) {
 
-        jeu = new Jeu();
-        jeu.addObserver(this);
-        jeu.nouvellePartie();
+        this.jeu = new Jeu();
+        this.jeu.addObserver(this);
+        this.jeu.nouvellePartie();
 
         fantomeImg = new Image[5];
         fantomeImg[0] = new Image("file:images/fantome1.png");
@@ -218,7 +218,7 @@ public class Main extends Application implements Observer // Fait office de vue
                 actionClavier(event.getCode());
             }
         });
-        afficherFrame();
+        afficherFrame(this.jeu);
 
         primaryStage.setResizable(false);
         primaryStage.setScene(s);
