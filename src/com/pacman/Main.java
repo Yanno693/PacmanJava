@@ -69,6 +69,8 @@ public class Main extends Application implements Observer // Fait office de vue
 
         if(_jeu.estGameover())
             gameoverView.setText("GAME OVER");
+        else
+            gameoverView.setText("");
 
         gridView.getChildren().clear();
         gridView.setHgap(1);

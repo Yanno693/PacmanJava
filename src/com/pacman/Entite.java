@@ -91,7 +91,7 @@ public abstract class Entite // Une entité pouvant se deplacer dans une grille
         }
     }
 
-    // Deplacement de l'entité dans la grille donnée en paramètre
+    // Deplacement de l'entité    dans la grille donnée en paramètre
     public abstract void deplacer(Grille g);
 
 }
