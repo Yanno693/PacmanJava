@@ -175,16 +175,16 @@ public class Main extends Application implements Observer // Fait office de vue
         this.jeu.nouvellePartie();
 
         fantomeImg = new Image[5];
-        fantomeImg[0] = new Image("file:images/fantome1.png");
-        fantomeImg[1] = new Image("file:images/fantome2.png");
-        fantomeImg[2] = new Image("file:images/fantome3.png");
-        fantomeImg[3] = new Image("file:images/fantome4.png");
-        fantomeImg[4] = new Image("file:images/fantomebleu.png");
+        fantomeImg[0] = new Image(this.getClass().getResourceAsStream("/fantome1.png"));
+        fantomeImg[1] = new Image(this.getClass().getResourceAsStream("/fantome2.png"));
+        fantomeImg[2] = new Image(this.getClass().getResourceAsStream("/fantome3.png"));
+        fantomeImg[3] = new Image(this.getClass().getResourceAsStream("/fantome4.png"));
+        fantomeImg[4] = new Image(this.getClass().getResourceAsStream("/fantomebleu.png"));
 
         pacmanImg = new Image[3];
-        pacmanImg[0] = new Image("file:images/pacman1.png");
-        pacmanImg[1] = new Image("file:images/pacman2.png");
-        pacmanImg[2] = new Image("file:images/pacman3.png");
+        pacmanImg[0] = new Image(this.getClass().getResourceAsStream("/pacman1.png"));
+        pacmanImg[1] = new Image(this.getClass().getResourceAsStream("/pacman2.png"));
+        pacmanImg[2] = new Image(this.getClass().getResourceAsStream("/pacman3.png"));
         positionPacmanImg = 0;
 
         primaryStage.setTitle("Pac-Man");
